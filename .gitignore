@@ -1,0 +1,7 @@
+/venv/
+
+
+/vosk-model-small-ru-0.22/
+/configuration.json
+/model_v3.pt
+/model_v4.pt
