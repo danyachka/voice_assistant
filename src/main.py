@@ -7,7 +7,7 @@ from src.lopper import MainLooper
 
 @dataclass
 class Config:
-    model: str
+    silero_model: str
     cores: int
 
 
@@ -16,7 +16,7 @@ def read_configuration():
 
     json_str = file.read()
     data = json.loads(json_str)
-    return Config(data["model"], data["cores"])
+    return Config(data["silero_model"], data["cores"])
 
 
 if __name__ == '__main__':
@@ -29,4 +29,3 @@ if __name__ == '__main__':
     looper = MainLooper(config)
 
     looper.startMainLoop()
-
