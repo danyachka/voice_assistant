@@ -45,13 +45,14 @@ class SileroProcessor:
 
         self.__call_generating_thread()
 
-    def __call_generating_thread(self):
+    def is_generating_thread_alive(self):
         if self.generating_thread is None:
-            start_thread = True
+            return False
         else:
-            start_thread = not self.generating_thread.is_alive()
+            return self.generating_thread.is_alive()
 
-        if not start_thread:
+    def __call_generating_thread(self):
+        if self.is_generating_thread_alive():
             return
 
         print(Fore.BLUE + "Starting silero generation thread" + Fore.RESET)
@@ -81,6 +82,10 @@ class SileroProcessor:
 
         return is_alive
 
+    def is_processing(self):
+        return (self.is_generating_thread_alive() or self.is_playing_thread_alive() or
+                (len(self.text_queue) != 0) or (len(self.audio_queue) != 0))
+
     def stop(self):
         self.text_queue = []
         self.audio_queue = []
@@ -105,6 +110,7 @@ class SileroProcessor:
             audio = audio.transpose()
 
             stream.write(audio.tobytes())
+            time.sleep(0.1)
 
         stream.stop_stream()
         stream.close()

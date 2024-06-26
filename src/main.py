@@ -28,4 +28,4 @@ if __name__ == '__main__':
 
     looper = MainLooper(config)
 
-    looper.startMainLoop()
+    looper.start_main_loop()
