@@ -1,3 +1,5 @@
+from colorama import Fore
+
 from src.processors.neural_processor import NeuralProcessor
 from src.processors.silero_processor import SileroProcessor
 from src.processors.vosk_processor import VoskProcessor
@@ -39,13 +41,16 @@ class MainLooper:
 
             if is_command:
                 self.sileroProcessor.say(f"Вы сказали: {recognized}")
+
             while self.sileroProcessor.is_processing() or self.neural.is_alive():
                 recognized = self.voskProcessor.listen()
                 if len(recognized) == 0:
                     continue
 
                 if recognized == "стоп":
+                    print(Fore.YELLOW + "Process stopped" + Fore.RESET)
                     self.sileroProcessor.stop()
+                    self.neural.stop()
 
     def check_if_call(self, string) -> tuple[str, bool]:
         if len(string) == 0:
@@ -66,6 +71,11 @@ class MainLooper:
                 return "Гуглю как бы", True
             case "адресс":
                 return '127.0.0.1:7860', True
+
+        english = self.translator.translate_to_english(text)
+
+        self.neural.process(english,
+                            lambda data: self.sileroProcessor.say(self.translator.translate_to_russian(data)))
 
         return "", False
 

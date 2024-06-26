@@ -8,13 +8,13 @@ import pyaudio
 import numpy as np
 from colorama import Fore
 
+speaker = 'xenia'
+
 
 class SileroProcessor:
     model = None
 
     sample_rate = 24000
-
-    speaker = 'xenia'
 
     device = torch.device('cpu')
 
