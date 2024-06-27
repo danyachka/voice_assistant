@@ -58,7 +58,7 @@ class MainLooper:
 
         words = string.split()
 
-        is_call = words[0] == self.name
+        is_call = words[0] in ["ксения", "ксении", "ксюша"]
 
         if is_call:
             string = " ".join(words[1:])

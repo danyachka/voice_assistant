@@ -14,6 +14,8 @@ speaker = 'xenia'
 class SileroProcessor:
     model = None
 
+    speaker = 'xenia'
+
     sample_rate = 24000
 
     device = torch.device('cpu')
@@ -110,7 +112,7 @@ class SileroProcessor:
             audio = audio.transpose()
 
             stream.write(audio.tobytes())
-            time.sleep(0.1)
+            time.sleep(0.06)
 
         stream.stop_stream()
         stream.close()
