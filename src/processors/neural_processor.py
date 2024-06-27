@@ -25,16 +25,16 @@ context: |
 
   {{user}}: Who are you?
   {{xenia}}: I'm super-duper voice assistant.
-  {{user}}: When did USSR collapsed
+  {{user}}: When did USSR collapsed.
   {{xenia}}: In one thousand nine hundred and ninety-one.
   {{user}}: How many days in Jule
-  {{xenia}}: Thirty one
+  {{xenia}}: Thirty one.
   {{user}}: How to wash the plates?
   {{xenia}}: Wash plates with warm soapy water, scrub off food residue, and rinse thoroughly. Dry with a towel or let air dry to prevent water spots.
   {{user}}: How to create a directory in linux using terminal?
-  {{xenia}}: mkdir and your directoty name after
+  {{xenia}}: mkdir and your directoty name after.
   {{user}}: When bluetooth was developed?
-  {{xenia}}: In nineteen ninety four
+  {{xenia}}: In nineteen ninety four.
 """
 
 greeting = "Hello! I'am here to help you"
@@ -82,7 +82,7 @@ class NeuralProcessor:
             ##
             "instruction_template": "Alpaca",
             "stream": True,
-            "max_tokens": 100
+            "max_tokens": 500
         }
 
         try:
@@ -98,19 +98,27 @@ class NeuralProcessor:
             assistant_message = ''
 
             temporal_message = ''
-            for event in self.client.events():
-                payload = json.loads(event.data)
-                print(json.dumps(payload))
-                chunk = payload['choices'][0]['delta']['content']
+            try:
+                for event in self.client.events():
+                    payload = json.loads(event.data)
+                    print(json.dumps(payload))
+                    chunk = payload['choices'][0]['delta']['content']
 
-                if chunk is not None:
-                    assistant_message += chunk
-                    temporal_message += chunk
+                    if chunk is not None:
+                        assistant_message += chunk
+                        temporal_message += chunk
 
-                    text, temporal_message = process_new_chunk_dots(temporal_message)
-                    if len(text) != 0:
-                        on_data_callback(text)
-                print(Fore.MAGENTA + chunk + Fore.RESET, end='')
+                        text, temporal_message = process_new_chunk_dots(temporal_message)
+                        if len(text) != 0:
+                            on_data_callback(text)
+                        if "\n" in temporal_message or "\n" in chunk:
+                            self.stop()
+                    print(Fore.MAGENTA + chunk + Fore.RESET, end='')
+            except:
+                pass
+
+            if len(temporal_message) > 1:
+                on_data_callback(temporal_message)
 
             self.client = None
 
@@ -127,11 +135,12 @@ class NeuralProcessor:
         return self.thread.is_alive()
 
     def clear(self) -> None:
+        self.history_start_time = time.time()
+
         self.stop()
         self.history = [{"role": assistant_role_name, "content": greeting}]
 
     def stop(self):
-        self.history_start_time = time.time()
 
         if self.client is not None:
             self.client.close()

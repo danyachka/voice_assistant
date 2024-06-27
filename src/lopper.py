@@ -40,7 +40,7 @@ class MainLooper:
             text, is_command = self.process_text_if_command(recognized)
 
             if is_command:
-                self.sileroProcessor.say(f"Вы сказали: {recognized}")
+                self.sileroProcessor.say(f"{text}")
 
             while self.sileroProcessor.is_processing() or self.neural.is_alive():
                 recognized = self.voskProcessor.listen()
@@ -56,19 +56,18 @@ class MainLooper:
         if len(string) == 0:
             return "", False
 
-        words = string.split()
+        strings_to_check = ["ксения", "ксении", "ксюша"]
 
-        is_call = words[0] in ["ксения", "ксении", "ксюша"]
+        for s in strings_to_check:
+            if s in string:
+                idx = string.index(s)
+                result = string[idx + len(s):]
+                return result, True
 
-        if is_call:
-            string = " ".join(words[1:])
-
-        return string, is_call
+        return string, False
 
     def process_text_if_command(self, text: str) -> tuple[str, bool]:
         match text.split()[0]:
-            case "загугли":
-                return "Гуглю как бы", True
             case "адресс":
                 return '127.0.0.1:7860', True
 

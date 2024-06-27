@@ -1,4 +1,5 @@
 import os
+import struct
 import time
 from threading import Thread
 
@@ -102,7 +103,7 @@ class SileroProcessor:
 
     def __play(self):
         p = pyaudio.PyAudio()
-        stream = p.open(format=pyaudio.paFloat32, channels=1, rate=self.sample_rate, output=True)
+        stream = p.open(format=pyaudio.paFloat32, channels=1, rate=int(self.sample_rate * 0.9), output=True)
 
         while len(self.audio_queue) != 0:
             print(Fore.GREEN + f"Continue silero playing thread: {len(self.audio_queue)}" + Fore.RESET)
@@ -112,7 +113,7 @@ class SileroProcessor:
             audio = audio.transpose()
 
             stream.write(audio.tobytes())
-            time.sleep(0.06)
+            time.sleep(0.22)
 
         stream.stop_stream()
         stream.close()
