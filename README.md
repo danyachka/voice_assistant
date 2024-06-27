@@ -1,23 +1,23 @@
 ## Voice assistant
 
-It is a simple voice assistant based on [Vosk](https://github.com/alphacep/vosk-api), [Silero](https://github.com/snakers4/silero-models) and [text-generation-webui](https://github.com/oobabooga/text-generation-webui/)'s API to setup any LLM as a core of voice assistant.
+This is a simple voice assistant based on [Vosk](https://github.com/alphacep/vosk-api), [Silero](https://github.com/snakers4/silero-models) and [text-generation-webui](https://github.com/oobabooga/text-generation-webui/)'s API to setup any LLM as a core of your voice assistant.
 
 ### Download vosk
-To get started with launching this project you need to download actual vosk version [here](https://alphacephei.com/vosk/models) and put it into directory ```vosk-model``` in project root directory. 
+To launch this project you need to download actual Vosk version [here](https://alphacephei.com/vosk/models) and put it into directory ```vosk-model``` in project root. 
 
 ### Setup text-generation-webui
 
-At first, you need to set start flags:
+You need to set starting flags for text-generation-webui webserver:
 ```bash
 --trust-remote-code --api --listen --api-port 9001
 ```
 
-After you need to download, and start LLM you want.
+After you need to download, configure and start LLM you want.
 
 
 ### Create a configuration file
 
-Configuration file should look like this:
+Configuration file must be named ```configuration.json``` and look like this:
 ```json
 {
   "silero_model": "v4",
@@ -27,9 +27,9 @@ Configuration file should look like this:
 ```
 
 
-### Create prompt.txt
+### Create prompt
 
-You need to create your prompt for your LLM. Example:
+You need to create your prompt for your LLM and put it into ```prompt.txt```. Example:
 ```text
 name: xenia
 greeting: How can I help you today?
