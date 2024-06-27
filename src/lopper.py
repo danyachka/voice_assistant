@@ -1,5 +1,6 @@
 from colorama import Fore
 
+from src.processors import neural_processor
 from src.processors.neural_processor import NeuralProcessor
 from src.processors.silero_processor import SileroProcessor
 from src.processors.vosk_processor import VoskProcessor

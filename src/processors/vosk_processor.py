@@ -18,7 +18,7 @@ class VoskProcessor:
     def __setup(self):
         print("Starting vosk setup")
 
-        model = vosk.Model('vosk-model-small-ru-0.22')
+        model = vosk.Model('vosk-model')
         self.record = vosk.KaldiRecognizer(model, 16000)
         self.pa = pyaudio.PyAudio()
         self.stream = self.pa.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
